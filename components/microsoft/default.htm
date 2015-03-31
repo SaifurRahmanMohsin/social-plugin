@@ -1,0 +1,10 @@
+{% if not user %}
+
+  <button id="social-microsoft" data-request="onMicrosoft" type="button" class="btn btn-default">Sign in using Microsoft</button>
+{% else %}
+
+  {% if not user.social.microsoft %}
+  <button id="social-microsoft" data-request="onMicrosoft" type="button" class="btn btn-default">Link to Microsoft</button>
+  {% endif %}
+
+{% endif %}

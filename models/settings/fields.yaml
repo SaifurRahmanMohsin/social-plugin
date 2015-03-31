@@ -1,0 +1,125 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    use_facebook:
+      label: Enable Facebook
+      type: switch
+      span: left
+      comment: Flick this switch to enable Facebook
+
+    facebook_id:
+      label: Facebook App ID
+      span: left
+      comment: Enter the Facebook App Id
+      trigger:
+          action: show
+          field: use_facebook
+          condition: checked
+
+    facebook_secret:
+      label: Facebook Secret
+      span: left
+      comment: Enter the Facebook App Secret
+      trigger:
+          action: show
+          field: use_facebook
+          condition: checked
+
+    use_google:
+      label: Enable Google
+      type: switch
+      span: right
+      comment: Flick this switch to enable Google
+
+    google_id:
+      label: Google Client ID
+      span: right
+      placeholder: abcdefghijklmnopqrstuvxyz.apps.googleusercontent.com
+      comment: Enter the Google Client ID
+      trigger:
+          action: show
+          field: use_google
+          condition: checked
+
+    google_secret:
+      label: Google Secret
+      span: right
+      comment: Enter the Google Client ID
+      trigger:
+          action: show
+          field: use_google
+          condition: checked
+
+    use_github:
+      label: Enable Github
+      type: switch
+      span: left
+      comment: Flick this switch to enable Github
+
+    github_id:
+      label: Github Client ID
+      span: left
+      comment: Enter the Github Client ID
+      trigger:
+          action: show
+          field: use_github
+          condition: checked
+
+    github_secret:
+      label: Github Client Secret
+      span: left
+      comment: Enter the Github Client Secret
+      trigger:
+          action: show
+          field: use_github
+          condition: checked
+
+    use_linkedin:
+      label: Enable LinkedIn
+      type: switch
+      span: right
+      comment: Flick this switch to enable LinkedIn
+
+    linkedin_id:
+      label: LinkedIn Client ID
+      span: right
+      comment: Enter the LinkedIn Client ID
+      trigger:
+          action: show
+          field: use_linkedin
+          condition: checked
+
+    linkedin_secret:
+      label: LinkedIn Client Secret
+      span: right
+      comment: Enter the LinkedIn Client Secret
+      trigger:
+          action: show
+          field: use_linkedin
+          condition: checked
+
+    use_microsoft:
+      label: Enable Microsoft
+      type: switch
+      span: left
+      comment: Flick this switch to enable Microsoft
+
+    microsoft_id:
+      label: Microsoft Client ID
+      span: left
+      comment: Enter the Microsoft Client ID
+      trigger:
+          action: show
+          field: use_microsoft
+          condition: checked
+
+    microsoft_secret:
+      label: Microsoft Client Secret
+      span: left
+      comment: Enter the Microsoft Client Secret
+      trigger:
+          action: show
+          field: use_microsoft
+          condition: checked

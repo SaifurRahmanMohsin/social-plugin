@@ -1,0 +1,10 @@
+{% if not user %}
+
+  <button id="social-facebook" data-request="onFacebook" type="button" class="btn btn-default">Sign in using Facebook</button>
+{% else %}
+
+  {% if not user.social.facebook %}
+  <button id="social-facebook" data-request="onFacebook" type="button" class="btn btn-default">Link to Facebook</button>
+  {% endif %}
+
+{% endif %}

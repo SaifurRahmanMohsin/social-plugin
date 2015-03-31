@@ -1,0 +1,15 @@
+{
+    "name": "mohsin/social",
+    "description": "Just another social plugin",
+    "homepage": "http://imoz.in",
+    "keywords": ["octobercms", "social","facebook", "github", "microsoft", "google", "linkedin"],
+    "authors": [
+        {
+            "name": "Saifur Rahman Mohsin",
+            "email": "mohsin92@me.com"
+        }
+    ],
+    "require": {
+        "league/oauth2-client": "0.10.*@dev"
+    }
+}

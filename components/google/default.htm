@@ -1,0 +1,10 @@
+{% if not user %}
+
+  <button id="social-google" data-request="onGoogle" type="button" class="btn btn-default">Sign in using Google</button>
+{% else %}
+
+  {% if not user.social.google %}
+  <button id="social-google" data-request="onGoogle" type="button" class="btn btn-default">Link to Google</button>
+  {% endif %}
+
+{% endif %}

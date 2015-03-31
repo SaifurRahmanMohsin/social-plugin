@@ -1,0 +1,10 @@
+{% if not user %}
+
+  <button id="social-linkedin" data-request="onLinkedIn" type="button" class="btn btn-default">Sign in using LinkedIn</button>
+{% else %}
+
+  {% if not user.social.linkedin %}
+  <button id="social-linkedin" data-request="onLinkedIn" type="button" class="btn btn-default">Link to LinkedIn</button>
+  {% endif %}
+
+{% endif %}

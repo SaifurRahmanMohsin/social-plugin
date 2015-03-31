@@ -1,0 +1,10 @@
+{% if not user %}
+
+  <button id="social-github" data-request="onGithub" type="button" class="btn btn-default">Sign in using Github</button>
+{% else %}
+
+  {% if not user.social.github %}
+  <button id="social-github" data-request="onGithub" type="button" class="btn btn-default">Link to Github</button>
+  {% endif %}
+
+{% endif %}
