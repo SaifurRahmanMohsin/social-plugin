@@ -11,44 +11,32 @@ use Cms\Classes\Page;
 use InvalidArgumentException;
 use Cms\Classes\ComponentBase;
 use Mohsin\Social\Models\Settings;
-use RainLab\User\Components\Account;
 use October\Rain\Auth\AuthException;
 use RainLab\User\Models\User as UserModel;
 use Mohsin\Social\Models\Social as SocialModel;
+use Mohsin\Social\Components\BaseProviderComponent;
 
-class Github extends Account
+class Github extends BaseProviderComponent
 {
-
     public function componentDetails()
     {
         return [
-            'name'        => 'Github Login',
-            'description' => 'Insert a Github Login Button to page'
+            'name'        => 'mohsin.social::lang.component.github_login',
+            'description' => 'mohsin.social::lang.component.github_desc'
         ];
     }
 
     public function onRun()
     {
-      $currentPage = $this -> currentPageUrl();
+      parent::onRun();
       $exception = null;
+
+      // Check for errors
+      if($this -> hasErrors())
+        return Redirect::to(self::$currentPage);
+
       if(Session::has('provider') && Session::get('provider') == 'github')
         {
-        /**
-         * Check if there are any errors from the previous request.
-         */
-        if (Input::has('error'))
-          {
-            $reason = Input::get('error');
-            if($reason == 'redirect_uri_mismatch')
-              Flash::error("The redirect setting for the Github app is not set properly. Set it to " . $currentPage);
-            else if($reason == 'incorrect_client_credentials')
-              Flash::error("The client_id and/or client_secret passed are incorrect.");
-            else if($reason == 'access_denied')
-              Flash::error("You need to approve the access in order to login.");
-            else
-              Flash::error('Error Occured: ' . $reason);
-            return Redirect::to($currentPage);
-          }
 
         /**
          * Previous request registered the user, login now and redirect
@@ -70,7 +58,7 @@ class Github extends Account
           if ($redirectUrl = post('redirect', $redirectUrl))
             return Redirect::intended($redirectUrl);
           else
-            return Redirect::to($currentPage);
+            return Redirect::to(self::currentPage);
         }
 
         /**
@@ -152,7 +140,7 @@ class Github extends Account
         $provider = $this -> getProvider();
         $authUrl = $provider -> getAuthorizationUrl();
         Session::flash('oauth2state', $provider->state);
-        return Redirect::to($authUrl);
+        return Redirect::to($authUrl)->with('provider', 'github');;
     }
 
     /**

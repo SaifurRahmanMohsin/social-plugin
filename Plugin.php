@@ -24,9 +24,9 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'Social',
-            'description' => 'Just another social plugin',
-            'author'      => 'Mohsin',
+            'name'        => 'mohsin.social::lang.plugin.name',
+            'description' => 'mohsin.social::lang.plugin.description',
+            'author'      => 'Saifur Rahman Mohsin',
             'icon'        => 'icon-users'
         ];
     }
@@ -52,23 +52,23 @@ class Plugin extends PluginBase
 
               'social[facebook]' => [
                   'label' => 'Facebook ID',
-                  'tab' => 'Social',
+                  'tab' => 'mohsin.social::lang.settings.social',
                 ],
               'social[google]' => [
                   'label' => 'Google ID',
-                  'tab' => 'Social',
+                  'tab' => 'mohsin.social::lang.settings.social',
                 ],
               'social[github]' => [
                   'label' => 'Github ID',
-                  'tab' => 'Social',
+                  'tab' => 'mohsin.social::lang.settings.social',
                 ],
               'social[linkedin]' => [
                   'label' => 'LinkedIn ID',
-                  'tab' => 'Social',
+                  'tab' => 'mohsin.social::lang.settings.social',
                 ],
               'social[microsoft]' => [
                   'label' => 'Microsoft ID',
-                  'tab' => 'Social',
+                  'tab' => 'mohsin.social::lang.settings.social',
                 ],
 
             ]);
@@ -91,8 +91,8 @@ class Plugin extends PluginBase
     {
       return [
         'settings' => [
-          'label'       => 'Social',
-          'description' => 'Configure social networks.',
+          'label'       => 'mohsin.social::lang.plugin.name',
+          'description' => 'mohsin.social::lang.settings.description',
           'category'    => 'rainlab.user::lang.settings.users',
           'icon'        => 'icon-users',
           'class'       => 'Mohsin\Social\Models\Settings',

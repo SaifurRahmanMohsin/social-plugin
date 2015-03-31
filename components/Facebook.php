@@ -5,44 +5,40 @@ use Lang;
 use Input;
 use Flash;
 use Session;
+use Cookie;
 use Redirect;
 use Validator;
 use Cms\Classes\Page;
 use ValidationException;
 use InvalidArgumentException;
 use Mohsin\Social\Models\Settings;
-use RainLab\User\Components\Account;
 use October\Rain\Auth\AuthException;
 use RainLab\User\Models\User as UserModel;
 use Mohsin\Social\Models\Social as SocialModel;
+use Mohsin\Social\Components\BaseProviderComponent;
 
-class Facebook extends Account
+class Facebook extends BaseProviderComponent
 {
 
     public function componentDetails()
     {
         return [
-            'name'        => 'Facebook Login',
-            'description' => 'Insert a Facebook Login Button to page'
+            'name'        => 'mohsin.social::lang.component.facebook_login',
+            'description' => 'mohsin.social::lang.component.facebook_desc'
         ];
     }
 
     public function onRun()
     {
-      $currentPage = $this -> currentPageUrl();
+      parent::onRun();
       $exception = null;
+
       if(Session::has('provider') && Session::get('provider') == 'facebook')
         {
-        /**
-         * Check if there are any errors from the previous request.
-         */
-        if (Input::has('error'))
-          {
-            $reason = Input::get('error_reason');
-            if($reason == 'user_denied')
-              Flash::error("Cancelled by user");
-            return Redirect::to($currentPage);
-          }
+
+        // Check for errors
+        if($this -> hasErrors())
+          return Redirect::to(self::$currentPage);
 
         /**
          * Check given state against previously stored one to mitigate CSRF attack.
@@ -166,7 +162,7 @@ class Facebook extends Account
     {
         if(Session::has('provider'))
           Session::remove('provider');
-        Session::put('provider','facebook');
+        Session::put('provider', 'facebook');
         $provider = $this -> getProvider();
         $authUrl = $provider -> getAuthorizationUrl();
         Session::flash('oauth2state', $provider->state);

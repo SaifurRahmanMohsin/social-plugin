@@ -11,44 +11,33 @@ use Cms\Classes\Page;
 use InvalidArgumentException;
 use Cms\Classes\ComponentBase;
 use Mohsin\Social\Models\Settings;
-use RainLab\User\Components\Account;
 use October\Rain\Auth\AuthException;
 use RainLab\User\Models\User as UserModel;
 use Mohsin\Social\Models\Social as SocialModel;
+use Mohsin\Social\Components\BaseProviderComponent;
 
-class LinkedIn extends Account
+class LinkedIn extends BaseProviderComponent
 {
 
     public function componentDetails()
     {
         return [
-            'name'        => 'LinkedIn Login',
-            'description' => 'Insert a LinkedIn Login Button to page'
+            'name'        => 'mohsin.social::lang.component.linkedin_login',
+            'description' => 'mohsin.social::lang.component.linkedin_desc'
         ];
     }
 
     public function onRun()
     {
-      $currentPage = $this -> currentPageUrl();
+      parent::onRun();
       $exception = null;
+
+      // Check for errors
+      if($this -> hasErrors())
+        return Redirect::to(self::$currentPage);
+
       if(Session::has('provider') && Session::get('provider') == 'linkedin')
         {
-        /**
-         * Check if there are any errors from the previous request.
-         */
-        if (Input::has('error'))
-          {
-            $reason = Input::get('error');
-            if($reason == 'redirect_uri_mismatch')
-              Flash::error("The redirect setting for the LinkedIn app is not set properly. Set it to " . $currentPage);
-            else if($reason == 'incorrect_client_credentials')
-              Flash::error("The client_id and/or client_secret passed are incorrect.");
-            else if($reason == 'access_denied')
-              Flash::error("You need to approve the access in order to login.");
-            else
-              Flash::error('Error Occured: ' . $reason);
-            return Redirect::to($currentPage);
-          }
 
         /**
          * Previous request registered the user, login now and redirect
