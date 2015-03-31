@@ -27,7 +27,7 @@ class Github extends Account
         ];
     }
 
-    public function onRender()
+    public function onRun()
     {
       $currentPage = $this -> currentPageUrl();
       $exception = null;
@@ -146,6 +146,8 @@ class Github extends Account
      */
     public function onGithub()
     {
+        if(Session::has('provider'))
+          Session::remove('provider');
         Session::put('provider', 'github');
         $provider = $this -> getProvider();
         $authUrl = $provider -> getAuthorizationUrl();

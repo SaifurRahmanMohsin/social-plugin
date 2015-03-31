@@ -27,7 +27,7 @@ class Microsoft extends Account
         ];
     }
 
-    public function onRender()
+    public function onRun()
     {
       $currentPage = $this -> currentPageUrl();
       $exception = null;
@@ -147,6 +147,8 @@ class Microsoft extends Account
      */
     public function onMicrosoft()
     {
+        if(Session::has('provider'))
+          Session::remove('provider');
         Session::put('provider', 'microsoft');
         $provider = $this -> getProvider();
         $authUrl = $provider -> getAuthorizationUrl();

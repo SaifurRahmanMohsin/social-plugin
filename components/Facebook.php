@@ -27,7 +27,7 @@ class Facebook extends Account
         ];
     }
 
-    public function onRender()
+    public function onRun()
     {
       $currentPage = $this -> currentPageUrl();
       $exception = null;
@@ -164,6 +164,8 @@ class Facebook extends Account
      */
     public function onFacebook()
     {
+        if(Session::has('provider'))
+          Session::remove('provider');
         Session::put('provider','facebook');
         $provider = $this -> getProvider();
         $authUrl = $provider -> getAuthorizationUrl();
@@ -183,5 +185,4 @@ class Facebook extends Account
             'scopes'        => ['email', 'public_profile', 'user_friends'],
         ]);
     }
-
 }

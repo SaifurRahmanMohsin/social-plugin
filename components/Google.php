@@ -27,7 +27,7 @@ class Google extends Account
         ];
     }
 
-    public function onRender()
+    public function onRun()
     {
       $currentPage = $this -> currentPageUrl();
       $exception = null;
@@ -173,6 +173,8 @@ class Google extends Account
      */
     public function onGoogle()
     {
+        if(Session::has('provider'))
+          Session::remove('provider');
         Session::put('provider', 'google');
         $provider = $this -> getProvider();
         $authUrl = $provider -> getAuthorizationUrl();

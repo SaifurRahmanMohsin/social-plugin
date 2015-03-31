@@ -27,7 +27,7 @@ class LinkedIn extends Account
         ];
     }
 
-    public function onRender()
+    public function onRun()
     {
       $currentPage = $this -> currentPageUrl();
       $exception = null;
@@ -147,6 +147,8 @@ class LinkedIn extends Account
      */
     public function onLinkedIn()
     {
+        if(Session::has('provider'))
+          Session::remove('provider');
         Session::put('provider', 'linkedin');
         $provider = $this -> getProvider();
         $authUrl = $provider -> getAuthorizationUrl();
