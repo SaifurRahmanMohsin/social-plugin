@@ -14,6 +14,7 @@ use Mohsin\Social\Models\Settings;
 use October\Rain\Auth\AuthException;
 use RainLab\User\Models\User as UserModel;
 use Mohsin\Social\Models\Social as SocialModel;
+use League\OAuth2\Client\Exception\IDPException;
 use Mohsin\Social\Components\BaseProviderComponent;
 
 class Github extends BaseProviderComponent
@@ -58,7 +59,7 @@ class Github extends BaseProviderComponent
           if ($redirectUrl = post('redirect', $redirectUrl))
             return Redirect::intended($redirectUrl);
           else
-            return Redirect::to(self::currentPage);
+            return Redirect::to(self::$currentPage);
         }
 
         /**
@@ -67,7 +68,7 @@ class Github extends BaseProviderComponent
         if (Input::has('state') && Input::get('state') !== Session::get('oauth2state'))
         {
           Flash::error("Invalid state");
-          return Redirect::to($currentPage);
+          return Redirect::to(self::$currentPage);
         }
 
         /**
@@ -109,6 +110,9 @@ class Github extends BaseProviderComponent
              if($user -> social == null)
                 $user -> social = SocialModel::getFromUser($user);
               $user -> social -> github = $userDetails -> uid;
+              $urls = $userDetails -> urls;
+              if(!empty($urls))
+                $user -> social -> github_url = array_shift($urls);
               $user -> social -> save();
 
               /*
@@ -121,10 +125,12 @@ class Github extends BaseProviderComponent
               $exception = $ex->getMessage();
             } catch (Exception $ex) { // All other exceptions
               $exception = $ex->getMessage();
+            } catch (IDPException $ex) {
+              $exception = $ex->getMessage();
             }
             if ($exception)
               Flash::error();
-            return Redirect::to($this->currentPageUrl());
+            return Redirect::to(self::$currentPage);
           }
         }
     }
@@ -140,33 +146,7 @@ class Github extends BaseProviderComponent
         $provider = $this -> getProvider();
         $authUrl = $provider -> getAuthorizationUrl();
         Session::flash('oauth2state', $provider->state);
-        return Redirect::to($authUrl)->with('provider', 'github');;
-    }
-
-    /**
-     * Register the user
-     */
-    public function register($data)
-    {
-        /*
-         * Validate input
-         */
-        if (!array_key_exists('password_confirmation', $data)) {
-            $data['password_confirmation'] = post('password');
-        }
-        $rules = [
-            'email'    => 'required|email|between:2,64',
-            'password' => 'required|min:2'
-        ];
-        $validation = Validator::make($data, $rules);
-        if ($validation->fails()) {
-            throw new ValidationException($validation);
-        }
-
-        /*
-         * Register user
-         */
-        return Auth::register($data, true);
+        return Redirect::to($authUrl);
     }
 
     /**

@@ -6,7 +6,6 @@ use Input;
 use Flash;
 use Session;
 use Redirect;
-use Validator;
 use Cms\Classes\Page;
 use InvalidArgumentException;
 use Cms\Classes\ComponentBase;
@@ -59,7 +58,7 @@ class LinkedIn extends BaseProviderComponent
           if ($redirectUrl = post('redirect', $redirectUrl))
             return Redirect::intended($redirectUrl);
           else
-            return Redirect::to($currentPage);
+            return Redirect::to(self::$currentPage);
         }
 
         /**
@@ -68,7 +67,7 @@ class LinkedIn extends BaseProviderComponent
         if (Input::has('state') && Input::get('state') !== Session::get('oauth2state'))
         {
           Flash::error("Invalid state");
-          return Redirect::to($currentPage);
+          return Redirect::to(self::$currentPage);
         }
 
         /**
@@ -95,22 +94,29 @@ class LinkedIn extends BaseProviderComponent
                */
               if (!$user) {
                 $password = uniqid();
+                $file = $this -> addImage($userDetails -> imageUrl);
                 $data = array (
                   'name' => $userDetails -> name,
                   'surname' => $userDetails -> lastName,
                   'email' => $userDetails -> email,
+                  'city' => $userDetails -> location,
                   'password' => $password,
                   'password_confirmation' => $password
                 );
 
                 // Register
                 $user = $this -> register($data, $userDetails -> uid);
+
+                // Create the relation between the image and user
+                $relation = $user->{'avatar'}();
+                $relation -> add($file, $this->sessionKey);
               }
 
              // Link the user to Github
              if($user -> social == null)
                 $user -> social = SocialModel::getFromUser($user);
               $user -> social -> linkedin = $userDetails -> uid;
+              $user -> social -> linkedin_url = $userDetails -> urls;
               $user -> social -> save();
 
               /*
@@ -126,7 +132,7 @@ class LinkedIn extends BaseProviderComponent
             }
             if ($exception)
               Flash::error();
-            return Redirect::to($this->currentPageUrl());
+            return Redirect::to(self::$currentPage);
           }
         }
     }
@@ -143,32 +149,6 @@ class LinkedIn extends BaseProviderComponent
         $authUrl = $provider -> getAuthorizationUrl();
         Session::flash('oauth2state', $provider->state);
         return Redirect::to($authUrl);
-    }
-
-    /**
-     * Register the user
-     */
-    public function register($data)
-    {
-        /*
-         * Validate input
-         */
-        if (!array_key_exists('password_confirmation', $data)) {
-            $data['password_confirmation'] = post('password');
-        }
-        $rules = [
-            'email'    => 'required|email|between:2,64',
-            'password' => 'required|min:2'
-        ];
-        $validation = Validator::make($data, $rules);
-        if ($validation->fails()) {
-            throw new ValidationException($validation);
-        }
-
-        /*
-         * Register user
-         */
-        return Auth::register($data, true);
     }
 
     /**

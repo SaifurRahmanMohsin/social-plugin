@@ -6,7 +6,6 @@ use Input;
 use Flash;
 use Session;
 use Redirect;
-use Validator;
 use Cms\Classes\Page;
 use InvalidArgumentException;
 use Cms\Classes\ComponentBase;
@@ -59,7 +58,7 @@ class Google extends BaseProviderComponent
           if ($redirectUrl = post('redirect', $redirectUrl))
             return Redirect::intended($redirectUrl);
           else
-            return Redirect::to($currentPage);
+            return Redirect::to(self::$currentPage);
         }
 
         /**
@@ -68,7 +67,7 @@ class Google extends BaseProviderComponent
         if (Input::has('state') && Input::get('state') !== Session::get('oauth2state'))
         {
           Flash::error("Invalid state");
-          return Redirect::to($currentPage);
+          return Redirect::to(self::$currentPage);
         }
 
         /**
@@ -95,16 +94,22 @@ class Google extends BaseProviderComponent
                */
               if (!$user) {
                 $password = uniqid();
+                $file = $this -> addImage(substr($userDetails -> imageUrl, 0, strrpos($userDetails -> imageUrl, '?')));
                 $data = array (
                   'name' => $userDetails -> name,
                   'surname' => $userDetails -> lastName,
                   'email' => $userDetails -> email,
                   'password' => $password,
-                  'password_confirmation' => $password
+                  'password_confirmation' => $password,
+                  'avatar' => $file
                 );
 
                 // Register
                 $user = $this -> register($data, $userDetails -> uid);
+
+                // Create the relation between the image and user
+                $relation = $user->{'avatar'}();
+                $relation -> add($file, $this->sessionKey);
               }
 
              // Link the user to Google
@@ -120,41 +125,15 @@ class Google extends BaseProviderComponent
             } catch (InvalidArgumentException $ex) { // Expired token and missing arguments
               $exception = 'This login token has already been used!';
             } catch (AuthException $ex) { // Expired token and missing arguments
-              $exception = $ex->getMessage();
+              $exception = $ex -> getMessage();
             } catch (Exception $ex) { // All other exceptions
-              $exception = $ex->getMessage();
+              $exception = $ex -> getMessage();
             }
             if ($exception)
               Flash::error();
-            return Redirect::to($this->currentPageUrl());
+            return Redirect::to(self::$currentPage);
           }
         }
-    }
-
-    /**
-     * Register the user
-     */
-    public function register($data)
-    {
-        /*
-         * Validate input
-         */
-        if (!array_key_exists('password_confirmation', $data)) {
-            $data['password_confirmation'] = post('password');
-        }
-        $rules = [
-            'email'    => 'required|email|between:2,64',
-            'password' => 'required|min:2'
-        ];
-        $validation = Validator::make($data, $rules);
-        if ($validation->fails()) {
-            throw new ValidationException($validation);
-        }
-
-        /*
-         * Register user
-         */
-        return Auth::register($data, true);
     }
 
     /**

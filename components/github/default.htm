@@ -1,10 +1,16 @@
 {% if not user %}
 
-  <button id="social-github" data-request="onGithub" type="button" class="btn btn-default">Sign in using Github</button>
+  <a data-request="onGithub" {% if showText and not showIcon %}style="padding: 10px 16px;" {% endif %}class="btn {% if useButton %} {% if github_btn_size %}btn-{{ github_btn_size }} {% endif %}btn-social{% if showIcon and not showText %}-icon{% endif %} btn-github{% else %} btn-default{% endif %}">
+    {% if showIcon %}<i class="icon icon-github"></i>{% endif %}
+    {% if showText %}Sign in using {{ __SELF__.name|ucfirst }}{% endif %}
+  </a>
 {% else %}
 
   {% if not user.social.github %}
-  <button id="social-github" data-request="onGithub" type="button" class="btn btn-default">Link to Github</button>
+  <a data-request="onGithub" {% if showText and not showIcon %}style="padding: 10px 16px;" {% endif %}class="btn {% if useButton %} {% if github_btn_size %}btn-{{ github_btn_size }} {% endif %}btn-social{% if showIcon and not showText %}-icon{% endif %} btn-github{% else %} btn-default{% endif %}">
+    {% if showIcon %}<i class="icon icon-github"></i>{% endif %}
+    {% if showText %}Connect to {{ __SELF__.name|ucfirst }}{% endif %}
+  </a>
   {% endif %}
 
 {% endif %}

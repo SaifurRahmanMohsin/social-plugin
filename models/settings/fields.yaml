@@ -3,6 +3,33 @@
 # ===================================
 
 fields:
+
+    use_styles:
+      label: Use stylish social buttons?
+      type: switch
+      span: left
+      comment: Enabling this shows fancy social buttons
+
+    show_icon:
+      label: Show icons?
+      type: switch
+      span: right
+      comment: Shows the social icons
+      trigger:
+          action: show
+          field: use_styles
+          condition: checked
+
+    show_text:
+      label: Show text?
+      type: switch
+      span: left
+      comment: Shows the social network name text
+      trigger:
+          action: show
+          field: use_styles
+          condition: checked
+
     use_facebook:
       label: Enable Facebook
       type: switch

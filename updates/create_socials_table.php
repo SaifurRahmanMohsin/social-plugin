@@ -16,8 +16,11 @@ class CreateSocialsTable extends Migration
             $table->string('facebook')->nullable();
             $table->string('google')->nullable();
             $table->string('github')->nullable();
+            $table->string('github_url')->nullable();
             $table->string('linkedin')->nullable();
+            $table->string('linkedin_url')->nullable();
             $table->string('microsoft')->nullable();
+            $table->string('microsoft_url')->nullable();
             $table->timestamps();
         });
     }

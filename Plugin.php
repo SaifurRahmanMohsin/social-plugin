@@ -62,12 +62,24 @@ class Plugin extends PluginBase
                   'label' => 'Github ID',
                   'tab' => 'mohsin.social::lang.settings.social',
                 ],
+              'social[github_url]' => [
+                  'label' => 'Github Url',
+                  'tab' => 'mohsin.social::lang.settings.social',
+                ],
               'social[linkedin]' => [
                   'label' => 'LinkedIn ID',
                   'tab' => 'mohsin.social::lang.settings.social',
                 ],
+              'social[linkedin_url]' => [
+                  'label' => 'LinkedIn Url',
+                  'tab' => 'mohsin.social::lang.settings.social',
+                ],
               'social[microsoft]' => [
                   'label' => 'Microsoft ID',
+                  'tab' => 'mohsin.social::lang.settings.social',
+                ],
+              'social[microsoft_url]' => [
+                  'label' => 'Microsoft URL',
                   'tab' => 'mohsin.social::lang.settings.social',
                 ],
 
@@ -100,5 +112,15 @@ class Plugin extends PluginBase
         ],
       ];
     }
+
+    public function registerMarkupTags()
+    {
+        return [
+            'filters' => [
+                'ucfirst' => 'ucfirst'
+            ]
+        ];
+    }
+
 
 }

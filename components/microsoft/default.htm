@@ -1,10 +1,16 @@
 {% if not user %}
 
-  <button id="social-microsoft" data-request="onMicrosoft" type="button" class="btn btn-default">Sign in using Microsoft</button>
+  <a data-request="onMicrosoft" {% if showText and not showIcon %}style="padding: 10px 16px;" {% endif %}class="btn {% if useButton %} {% if microsoft_btn_size %}btn-{{ microsoft_btn_size }} {% endif %}btn-social{% if showIcon and not showText %}-icon{% endif %} btn-microsoft{% else %} btn-default{% endif %}">
+    {% if showIcon %}<i class="icon icon-windows"></i>{% endif %}
+    {% if showText %}Sign in using {{ __SELF__.name|ucfirst }}{% endif %}
+  </a>
 {% else %}
 
   {% if not user.social.microsoft %}
-  <button id="social-microsoft" data-request="onMicrosoft" type="button" class="btn btn-default">Link to Microsoft</button>
+  <a data-request="onMicrosoft" {% if showText and not showIcon %}style="padding: 10px 16px;" {% endif %}class="btn {% if useButton %} {% if microsoft_btn_size %}btn-{{ microsoft_btn_size }} {% endif %}btn-social{% if showIcon and not showText %}-icon{% endif %} btn-microsoft{% else %} btn-default{% endif %}">
+    {% if showIcon %}<i class="icon icon-windows"></i>{% endif %}
+    {% if showText %}Connect to {{ __SELF__.name|ucfirst }}{% endif %}
+  </a>
   {% endif %}
 
 {% endif %}

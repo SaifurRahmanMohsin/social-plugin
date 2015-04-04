@@ -6,7 +6,6 @@ use Input;
 use Flash;
 use Session;
 use Redirect;
-use Validator;
 use Cms\Classes\Page;
 use InvalidArgumentException;
 use Cms\Classes\ComponentBase;
@@ -14,6 +13,7 @@ use Mohsin\Social\Models\Settings;
 use October\Rain\Auth\AuthException;
 use RainLab\User\Models\User as UserModel;
 use Mohsin\Social\Models\Social as SocialModel;
+use League\OAuth2\Client\Exception\IDPException;
 use Mohsin\Social\Components\BaseProviderComponent;
 
 class Microsoft extends BaseProviderComponent
@@ -59,7 +59,7 @@ class Microsoft extends BaseProviderComponent
           if ($redirectUrl = post('redirect', $redirectUrl))
             return Redirect::intended($redirectUrl);
           else
-            return Redirect::to($currentPage);
+            return Redirect::to(self::$currentPage);
         }
 
         /**
@@ -68,7 +68,7 @@ class Microsoft extends BaseProviderComponent
         if (Input::has('state') && Input::get('state') !== Session::get('oauth2state'))
         {
           Flash::error("Invalid state");
-          return Redirect::to($currentPage);
+          return Redirect::to(self::$currentPage);
         }
 
         /**
@@ -95,22 +95,31 @@ class Microsoft extends BaseProviderComponent
                */
               if (!$user) {
                 $password = uniqid();
+                $file = $this -> addImage(substr($userDetails -> imageUrl, 0, strrpos($userDetails -> imageUrl, ':')));
                 $data = array (
                   'name' => $userDetails -> name,
                   'surname' => $userDetails -> lastName,
                   'email' => $userDetails -> email,
                   'password' => $password,
-                  'password_confirmation' => $password
+                  'password_confirmation' => $password,
+                  'avatar' => $file
                 );
 
                 // Register
                 $user = $this -> register($data, $userDetails -> uid);
+
+                // Create the relation between the image and user
+                $relation = $user->{'avatar'}();
+                $relation -> add($file, $this->sessionKey);
               }
 
              // Link the user to Microsoft
              if($user -> social == null)
                 $user -> social = SocialModel::getFromUser($user);
               $user -> social -> microsoft = $userDetails -> uid;
+              $urls = $userDetails -> urls;
+              if(!empty($urls))
+                $user -> social -> microsoft_url = is_array($urls) ? array_shift($urls) : $urls;
               $user -> social -> save();
 
               /*
@@ -118,15 +127,17 @@ class Microsoft extends BaseProviderComponent
                */
               Session::flash('user_id', $user -> id);
             } catch (InvalidArgumentException $ex) { // Expired token and missing arguments
-              $exception = 'This login token has already been used!';
+              $exception = Lang::get('mohsin.social::lang.errors.used_token');
             } catch (AuthException $ex) { // Expired token and missing arguments
+              $exception = $ex->getMessage();
+            } catch (IDPException $ex) { // All other exceptions
               $exception = $ex->getMessage();
             } catch (Exception $ex) { // All other exceptions
               $exception = $ex->getMessage();
             }
             if ($exception)
               Flash::error();
-            return Redirect::to($this->currentPageUrl());
+            return Redirect::to(self::$currentPage);
           }
         }
     }
@@ -143,32 +154,6 @@ class Microsoft extends BaseProviderComponent
         $authUrl = $provider -> getAuthorizationUrl();
         Session::flash('oauth2state', $provider->state);
         return Redirect::to($authUrl);
-    }
-
-    /**
-     * Register the user
-     */
-    public function register($data)
-    {
-        /*
-         * Validate input
-         */
-        if (!array_key_exists('password_confirmation', $data)) {
-            $data['password_confirmation'] = post('password');
-        }
-        $rules = [
-            'email'    => 'required|email|between:2,64',
-            'password' => 'required|min:2'
-        ];
-        $validation = Validator::make($data, $rules);
-        if ($validation->fails()) {
-            throw new ValidationException($validation);
-        }
-
-        /*
-         * Register user
-         */
-        return Auth::register($data, true);
     }
 
     /**
