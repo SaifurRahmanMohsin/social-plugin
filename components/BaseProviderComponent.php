@@ -36,7 +36,7 @@ class BaseProviderComponent extends Account
               'default'     => ''
           ],
       );
-    if(Settings::get('use_button'))
+    if(Settings::get('use_styles'))
       {
           $properties['size'] = array(
                 'title'       => 'mohsin.social::lang.component.btn_size',
