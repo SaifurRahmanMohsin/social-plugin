@@ -4,3 +4,5 @@
   - create_socials_table.php
 1.0.2:
   - Added additional user information fields
+1.0.3:
+  - Added social icons
