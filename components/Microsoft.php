@@ -95,7 +95,7 @@ class Microsoft extends BaseProviderComponent
                */
               if (!$user) {
                 $password = uniqid();
-                $file = $this -> addImage(substr($userDetails -> imageUrl, 0, strrpos($userDetails -> imageUrl, ':')));
+                $file = $this -> addImage('m' . $userDetails -> uid, substr($userDetails -> imageUrl, 0, strrpos($userDetails -> imageUrl, ':')));
                 $data = array (
                   'name' => $userDetails -> name,
                   'surname' => $userDetails -> lastName,

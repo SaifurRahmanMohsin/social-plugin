@@ -3,7 +3,8 @@
 return [
     'plugin' => [
         'name' => 'Social',
-        'description' => 'OAuth2 based social login provider.'
+        'description' => 'OAuth2 based social login provider.',
+        'access_settings' => 'Manage Social Login Settings'
     ],
     'errors' => [
         'redirect_uri_mismatch' => 'The redirect setting for this login is misconfigured. Set it to ',
@@ -13,6 +14,16 @@ return [
         'incorrect_client_credentials' => 'The client_id and / or client_secret passed are incorrect.',
         'bad_verification_code' => 'The code passed is incorrect or expired.',
         'error_occured' => 'Error Occured'
+    ],
+    'social' => [
+        'facebook_id' => 'Facebook ID',
+        'google_id' => 'Google ID',
+        'github_id' => 'Github ID',
+        'github_url' => 'Github Url',
+        'linkedin_id' => 'LinkedIn ID',
+        'linkedin_url' => 'LinkedIn Url',
+        'microsoft_id' => 'Microsoft ID',
+        'microsoft_url' => 'Microsoft Url'
     ],
     'component' => [
         'btn_size' => 'Button Size',
@@ -29,7 +40,42 @@ return [
         'microsoft_desc'  => 'Insert a Microsoft Login Button to page',
     ],
     'settings' => [
-        'social' => 'Social',
-        'description' => 'Manage social login providers.'
+        'name' => 'Social login settings',
+        'description' => 'Manage social login providers.',
+        'client_id_label' => 'Client ID',
+        'client_secret_label' => 'Client Secret',
+        'general_tab' => 'General',
+        'facebook_tab' => 'Facebook',
+        'google_tab' => 'Google',
+        'github_tab' => 'Github',
+        'linkedin_tab' => 'LinkedIn',
+        'microsoft_tab' => 'Microsoft',
+        'use_styles_label' => 'Use stylish social buttons?',
+        'use_styles_comment' => 'Enabling this shows fancy social buttons',
+        'show_icon_label' => 'Show icons?',
+        'show_icon_comment' => 'Shows the social icons',
+        'show_text_label' => 'Show text?',
+        'show_text_comment' => 'Shows the social network name text',
+        'use_facebook_label' => 'Enable Facebook',
+        'use_facebook_comment' => 'Flick this switch to enable Facebook',
+        'facebook_id_label' => 'App ID',
+        'facebook_id_comment' => 'Enter the Facebook App ID',
+        'facebook_secret_comment' => 'Enter the Facebook App Secret',
+        'use_google_label' => 'Enable Google',
+        'use_google_comment' => 'Flick this switch to enable Google',
+        'google_id_comment' => 'Enter the Google Client ID',
+        'google_secret_comment' => 'Enter the Google Client Secret',
+        'use_github_label' => 'Enable Github',
+        'use_github_comment' => 'Flick this switch to enable Github',
+        'github_id_comment' => 'Enter the Github Client ID',
+        'github_secret_comment' => 'Enter the Github Client Secret',
+        'use_linkedin_label' => 'Enable LinkedIn',
+        'use_linkedin_comment' => 'Flick this switch to enable LinkedIn',
+        'linkedin_id_comment' => 'Enter the LinkedIn Client ID',
+        'linkedin_secret_comment' => 'Enter the LinkedIn Client Secret',
+        'use_microsoft_label' => 'Enable Microsoft',
+        'use_microsoft_comment' => 'Flick this switch to enable Microsoft',
+        'microsoft_id_comment' => 'Enter the Microsoft Client ID',
+        'microsoft_secret_comment' => 'Enter the Microsoft Client Secret',
     ],
 ];

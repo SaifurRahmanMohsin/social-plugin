@@ -1,15 +1,17 @@
 <?php namespace Mohsin\Social\Components;
 
+use File;
 use Auth;
 use Lang;
 use Input;
 use Flash;
+use Storage;
 use Session;
 use Redirect;
 use Validator;
-use System\Models\File;
 use October\Rain\Network\Http;
 use Mohsin\Social\Models\Settings;
+use System\Models\File as FileModel;
 use RainLab\User\Components\Account;
 
 class BaseProviderComponent extends Account
@@ -60,6 +62,10 @@ class BaseProviderComponent extends Account
 
   public function onRun()
   {
+
+      // Call parent to inject the user variable to the page
+      parent::onRun();
+
       // Initialize the provider
       $this -> setProvider();
 
@@ -138,25 +144,28 @@ class BaseProviderComponent extends Account
     return false;
   }
 
-  /**
-   * Saves an image to disk.
-   *
-   * @param  string $imageUrl
-   * @return File
-   */
-  public function addImage($imageUrl)
-  {
-      // Save image to disk
-      $file = new File;
-      $tempFile = $file -> getLocalTempPath() . 'jpg';
-      $file -> copyStorageToLocal($file -> getDiskPath(), $tempFile);
-      $result = Http::get($imageUrl);
-      $result -> toFile($tempFile);
-      $result -> send();
-      $file -> fromFile($tempFile);
-      $file -> data = $tempFile;
-      $file -> save();
-      return $file;
-  }
+    /**
+     * Saves an image to disk with the unique name.
+     *
+     * @param  string $imageUrl
+     * @return File
+     */
+    public function addImage($uniqueName, $imageUrl)
+    {
+        $tempFile = temp_path() . '/' . str_slug($uniqueName, "-") . '.jpg';
+
+        // Obtain the file from url
+        $result = Http::get($imageUrl);
+        $result -> toFile($tempFile);
+        $result -> send();
+
+        // Save file to disk
+        $file = new FileModel;
+        $file -> fromFile($tempFile);
+
+        File::delete($tempFile);
+
+        return $file;
+    }
 
 }

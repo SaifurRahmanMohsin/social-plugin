@@ -94,7 +94,7 @@ class LinkedIn extends BaseProviderComponent
                */
               if (!$user) {
                 $password = uniqid();
-                $file = $this -> addImage($userDetails -> imageUrl);
+                $file = $this -> addImage('l' . $userDetails -> uid, $userDetails -> imageUrl);
                 $data = array (
                   'name' => $userDetails -> name,
                   'surname' => $userDetails -> lastName,

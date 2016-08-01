@@ -2,6 +2,7 @@
 
 use Event;
 use System\Classes\PluginBase;
+use System\Classes\SettingsManager;
 use RainLab\User\Models\User as UserModel;
 use RainLab\User\Controllers\Users as UsersController;
 use Mohsin\Social\Models\Social as SocialModel;
@@ -51,36 +52,36 @@ class Plugin extends PluginBase
           $form->addTabFields([
 
               'social[facebook]' => [
-                  'label' => 'Facebook ID',
-                  'tab' => 'mohsin.social::lang.settings.social',
+                  'label' => 'mohsin.social::lang.social.facebook_id',
+                  'tab' => 'mohsin.social::lang.plugin.name',
                 ],
               'social[google]' => [
-                  'label' => 'Google ID',
-                  'tab' => 'mohsin.social::lang.settings.social',
+                  'label' => 'mohsin.social::lang.social.google_id',
+                  'tab' => 'mohsin.social::lang.plugin.name',
                 ],
               'social[github]' => [
-                  'label' => 'Github ID',
-                  'tab' => 'mohsin.social::lang.settings.social',
+                  'label' => 'mohsin.social::lang.social.github_id',
+                  'tab' => 'mohsin.social::lang.plugin.name',
                 ],
               'social[github_url]' => [
-                  'label' => 'Github Url',
-                  'tab' => 'mohsin.social::lang.settings.social',
+                  'label' => 'mohsin.social::lang.social.github_url',
+                  'tab' => 'mohsin.social::lang.plugin.name',
                 ],
               'social[linkedin]' => [
-                  'label' => 'LinkedIn ID',
-                  'tab' => 'mohsin.social::lang.settings.social',
+                  'label' => 'mohsin.social::lang.social.linkedin_id',
+                  'tab' => 'mohsin.social::lang.plugin.name',
                 ],
               'social[linkedin_url]' => [
-                  'label' => 'LinkedIn Url',
-                  'tab' => 'mohsin.social::lang.settings.social',
+                  'label' => 'mohsin.social::lang.social.linkedin_url',
+                  'tab' => 'mohsin.social::lang.plugin.name',
                 ],
               'social[microsoft]' => [
-                  'label' => 'Microsoft ID',
-                  'tab' => 'mohsin.social::lang.settings.social',
+                  'label' => 'mohsin.social::lang.social.microsoft_id',
+                  'tab' => 'mohsin.social::lang.plugin.name',
                 ],
               'social[microsoft_url]' => [
-                  'label' => 'Microsoft URL',
-                  'tab' => 'mohsin.social::lang.settings.social',
+                  'label' => 'mohsin.social::lang.social.microsoft_url',
+                  'tab' => 'mohsin.social::lang.plugin.name',
                 ],
 
             ]);
@@ -91,26 +92,34 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
-            'Mohsin\Social\Components\Facebook' => 'facebook',
-            'Mohsin\Social\Components\Google' => 'google',
-            'Mohsin\Social\Components\Github' => 'github',
-            'Mohsin\Social\Components\LinkedIn' => 'linkedin',
-            'Mohsin\Social\Components\Microsoft' => 'microsoft'
+            'Mohsin\Social\Components\Facebook'   => 'facebook',
+            'Mohsin\Social\Components\Google'     => 'google',
+            'Mohsin\Social\Components\Github'     => 'github',
+            'Mohsin\Social\Components\LinkedIn'   => 'linkedin',
+            'Mohsin\Social\Components\Microsoft'  => 'microsoft'
+        ];
+    }
+
+    public function registerPermissions()
+    {
+        return [
+            'mohsin.social.access_settings' => ['tab' => 'rainlab.user::lang.plugin.tab', 'label' => 'mohsin.social::lang.plugin.access_settings']
         ];
     }
 
     public function registerSettings()
     {
-      return [
-        'settings' => [
-          'label'       => 'mohsin.social::lang.plugin.name',
-          'description' => 'mohsin.social::lang.settings.description',
-          'category'    => 'rainlab.user::lang.settings.users',
-          'icon'        => 'icon-users',
-          'class'       => 'Mohsin\Social\Models\Settings',
-          'order'       => 500
-        ],
-      ];
+        return [
+            'settings' => [
+                'label'       => 'mohsin.social::lang.settings.name',
+                'description' => 'mohsin.social::lang.settings.description',
+                'category'    => SettingsManager::CATEGORY_USERS,
+                'icon'        => 'icon-users',
+                'class'       => 'Mohsin\Social\Models\Settings',
+                'order'       => 502,
+                'permissions' => ['mohsin.social.access_settings']
+            ]
+        ];
     }
 
     public function registerMarkupTags()

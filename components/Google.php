@@ -94,7 +94,7 @@ class Google extends BaseProviderComponent
                */
               if (!$user) {
                 $password = uniqid();
-                $file = $this -> addImage(substr($userDetails -> imageUrl, 0, strrpos($userDetails -> imageUrl, '?')));
+                $file = $this -> addImage('g' . $userDetails -> uid, substr($userDetails -> imageUrl, 0, strrpos($userDetails -> imageUrl, '?')));
                 $data = array (
                   'name' => $userDetails -> name,
                   'surname' => $userDetails -> lastName,

@@ -2,151 +2,181 @@
 #  Form Field Definitions
 # ===================================
 
-fields:
+tabs:
+    defaultTab: mohsin.social::lang.settings.general_tab
+    fields:
 
-    use_styles:
-      label: Use stylish social buttons?
-      type: switch
-      span: left
-      comment: Enabling this shows fancy social buttons
+        use_styles:
+          label: mohsin.social::lang.settings.use_styles_label
+          comment: mohsin.social::lang.settings.use_styles_comment
+          type: switch
+          span: left
+          tab: mohsin.social::lang.settings.general_tab
 
-    show_icon:
-      label: Show icons?
-      type: switch
-      span: right
-      comment: Shows the social icons
-      trigger:
-          action: show
-          field: use_styles
-          condition: checked
+        show_icon:
+          label: mohsin.social::lang.settings.show_icon_label
+          comment: mohsin.social::lang.settings.show_icon_comment
+          type: switch
+          span: right
+          tab: mohsin.social::lang.settings.general_tab
+          trigger:
+              action: show
+              field: use_styles
+              condition: checked
 
-    show_text:
-      label: Show text?
-      type: switch
-      span: left
-      comment: Shows the social network name text
-      trigger:
-          action: show
-          field: use_styles
-          condition: checked
+        show_text:
+          label: mohsin.social::lang.settings.show_text_label
+          comment: mohsin.social::lang.settings.show_text_comment
+          type: switch
+          span: left
+          tab: mohsin.social::lang.settings.general_tab
+          trigger:
+              action: show
+              field: use_styles
+              condition: checked
 
-    use_facebook:
-      label: Enable Facebook
-      type: switch
-      span: left
-      comment: Flick this switch to enable Facebook
+        facebook_instructions:
+            type: partial
+            tab: mohsin.social::lang.settings.facebook_tab
+            path: $/mohsin/social/models/settings/facebook_instructions.htm
 
-    facebook_id:
-      label: Facebook App ID
-      span: left
-      comment: Enter the Facebook App Id
-      trigger:
-          action: show
-          field: use_facebook
-          condition: checked
+        use_facebook:
+          label: mohsin.social::lang.settings.use_facebook_label
+          comment: mohsin.social::lang.settings.use_facebook_comment
+          type: switch
+          tab: mohsin.social::lang.settings.facebook_tab
 
-    facebook_secret:
-      label: Facebook Secret
-      span: left
-      comment: Enter the Facebook App Secret
-      trigger:
-          action: show
-          field: use_facebook
-          condition: checked
+        facebook_id:
+          label: mohsin.social::lang.settings.facebook_id_label
+          comment: mohsin.social::lang.settings.facebook_id_comment
+          tab: mohsin.social::lang.settings.facebook_tab
+          trigger:
+              action: show
+              field: use_facebook
+              condition: checked
 
-    use_google:
-      label: Enable Google
-      type: switch
-      span: right
-      comment: Flick this switch to enable Google
+        facebook_secret:
+          label: mohsin.social::lang.settings.client_secret_label
+          comment: mohsin.social::lang.settings.facebook_secret_comment
+          tab: mohsin.social::lang.settings.facebook_tab
+          trigger:
+              action: show
+              field: use_facebook
+              condition: checked
 
-    google_id:
-      label: Google Client ID
-      span: right
-      placeholder: abcdefghijklmnopqrstuvxyz.apps.googleusercontent.com
-      comment: Enter the Google Client ID
-      trigger:
-          action: show
-          field: use_google
-          condition: checked
+        google_instructions:
+            type: partial
+            tab: mohsin.social::lang.settings.google_tab
+            path: $/mohsin/social/models/settings/google_instructions.htm
 
-    google_secret:
-      label: Google Secret
-      span: right
-      comment: Enter the Google Client ID
-      trigger:
-          action: show
-          field: use_google
-          condition: checked
+        use_google:
+          label: mohsin.social::lang.settings.use_google_label
+          comment: mohsin.social::lang.settings.use_google_comment
+          type: switch
+          tab: mohsin.social::lang.settings.google_tab
 
-    use_github:
-      label: Enable Github
-      type: switch
-      span: left
-      comment: Flick this switch to enable Github
+        google_id:
+          label: mohsin.social::lang.settings.client_id_label
+          comment: mohsin.social::lang.settings.google_id_comment
+          placeholder: abcdefghijklmnopqrstuvxyz.apps.googleusercontent.com
+          tab: mohsin.social::lang.settings.google_tab
+          trigger:
+              action: show
+              field: use_google
+              condition: checked
 
-    github_id:
-      label: Github Client ID
-      span: left
-      comment: Enter the Github Client ID
-      trigger:
-          action: show
-          field: use_github
-          condition: checked
+        google_secret:
+          label: mohsin.social::lang.settings.client_secret_label
+          comment: mohsin.social::lang.settings.google_secret_comment
+          tab: mohsin.social::lang.settings.google_tab
+          trigger:
+              action: show
+              field: use_google
+              condition: checked
 
-    github_secret:
-      label: Github Client Secret
-      span: left
-      comment: Enter the Github Client Secret
-      trigger:
-          action: show
-          field: use_github
-          condition: checked
+        github_instructions:
+            type: partial
+            tab: mohsin.social::lang.settings.github_tab
+            path: $/mohsin/social/models/settings/github_instructions.htm
 
-    use_linkedin:
-      label: Enable LinkedIn
-      type: switch
-      span: right
-      comment: Flick this switch to enable LinkedIn
+        use_github:
+          label: mohsin.social::lang.settings.use_github_label
+          comment: mohsin.social::lang.settings.use_github_comment
+          type: switch
+          tab: mohsin.social::lang.settings.github_tab
 
-    linkedin_id:
-      label: LinkedIn Client ID
-      span: right
-      comment: Enter the LinkedIn Client ID
-      trigger:
-          action: show
-          field: use_linkedin
-          condition: checked
+        github_id:
+          label: mohsin.social::lang.settings.client_id_label
+          comment: mohsin.social::lang.settings.github_id_comment
+          tab: mohsin.social::lang.settings.github_tab
+          trigger:
+              action: show
+              field: use_github
+              condition: checked
 
-    linkedin_secret:
-      label: LinkedIn Client Secret
-      span: right
-      comment: Enter the LinkedIn Client Secret
-      trigger:
-          action: show
-          field: use_linkedin
-          condition: checked
+        github_secret:
+          label: mohsin.social::lang.settings.client_secret_label
+          comment: mohsin.social::lang.settings.github_secret_comment
+          tab: mohsin.social::lang.settings.github_tab
+          trigger:
+              action: show
+              field: use_github
+              condition: checked
 
-    use_microsoft:
-      label: Enable Microsoft
-      type: switch
-      span: left
-      comment: Flick this switch to enable Microsoft
+        linkedin_instructions:
+            type: partial
+            tab: mohsin.social::lang.settings.linkedin_tab
+            path: $/mohsin/social/models/settings/linkedin_instructions.htm
 
-    microsoft_id:
-      label: Microsoft Client ID
-      span: left
-      comment: Enter the Microsoft Client ID
-      trigger:
-          action: show
-          field: use_microsoft
-          condition: checked
+        use_linkedin:
+          label: mohsin.social::lang.settings.use_linkedin_label
+          comment: mohsin.social::lang.settings.use_linkedin_comment
+          type: switch
+          tab: mohsin.social::lang.settings.linkedin_tab
 
-    microsoft_secret:
-      label: Microsoft Client Secret
-      span: left
-      comment: Enter the Microsoft Client Secret
-      trigger:
-          action: show
-          field: use_microsoft
-          condition: checked
+        linkedin_id:
+          label: mohsin.social::lang.settings.client_id_label
+          comment: mohsin.social::lang.settings.linkedin_id_comment
+          tab: mohsin.social::lang.settings.linkedin_tab
+          trigger:
+              action: show
+              field: use_linkedin
+              condition: checked
+
+        linkedin_secret:
+          label: mohsin.social::lang.settings.client_secret_label
+          comment: mohsin.social::lang.settings.linkedin_secret_comment
+          tab: mohsin.social::lang.settings.linkedin_tab
+          trigger:
+              action: show
+              field: use_linkedin
+              condition: checked
+
+        microsoft_instructions:
+            type: partial
+            tab: mohsin.social::lang.settings.microsoft_tab
+            path: $/mohsin/social/models/settings/microsoft_instructions.htm
+
+        use_microsoft:
+          label: mohsin.social::lang.settings.use_microsoft_label
+          comment: mohsin.social::lang.settings.use_microsoft_comment
+          type: switch
+          tab: mohsin.social::lang.settings.microsoft_tab
+
+        microsoft_id:
+          label: mohsin.social::lang.settings.client_id_label
+          comment: mohsin.social::lang.settings.microsoft_id_comment
+          tab: mohsin.social::lang.settings.microsoft_tab
+          trigger:
+              action: show
+              field: use_microsoft
+              condition: checked
+
+        microsoft_secret:
+          label: mohsin.social::lang.settings.client_secret_label
+          comment: mohsin.social::lang.settings.microsoft_secret_comment
+          tab: mohsin.social::lang.settings.microsoft_tab
+          trigger:
+              action: show
+              field: use_microsoft
+              condition: checked
