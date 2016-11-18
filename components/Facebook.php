@@ -82,22 +82,22 @@ class Facebook extends BaseProviderComponent
               ]);
 
               // Get user details now
-              $userDetails = $provider->getUserDetails($token);
+              $userDetails = $provider->getResourceOwner($token);
 
               // Check if the user already exists
-              $user = UserModel::where( 'email', $userDetails -> email )->first();
+              $user = UserModel::where( 'email', $userDetails -> getEmail() )->first();
 
               /*
                * If user doesn't exist, create a new user
                */
               if (!$user) {
                 $password = uniqid();
-                $file = $this -> addImage('fb' . $userDetails -> uid, $userDetails -> imageUrl);
+                $file = $this -> addImage('fb' . $userDetails -> getId(), $userDetails -> getPictureUrl());
                 $data = array (
-                  'name' => $userDetails -> name,
-                  'surname' => $userDetails -> lastName,
-                  'email' => $userDetails -> email,
-                  'city' => $userDetails -> location,
+                  'name' => $userDetails -> getFirstName(),
+                  'surname' => $userDetails -> getLastName(),
+                  'email' => $userDetails -> getEmail(),
+                  'city' => $userDetails -> getHometown(),
                   'password' => $password,
                   'password_confirmation' => $password,
                   'avatar' => $file
@@ -114,7 +114,7 @@ class Facebook extends BaseProviderComponent
              // Link the user to Facebook
              if($user -> social == null)
                 $user -> social = SocialModel::getFromUser($user);
-              $user -> social -> facebook = $userDetails -> uid;
+              $user -> social -> facebook = $userDetails -> getId();
               $user -> social -> save();
 
               /*
@@ -145,7 +145,7 @@ class Facebook extends BaseProviderComponent
         Session::put('provider', 'facebook');
         $provider = $this -> getProvider();
         $authUrl = $provider -> getAuthorizationUrl();
-        Session::flash('oauth2state', $provider->state);
+        Session::flash('oauth2state', $provider->getState());
         return Redirect::to($authUrl);
     }
 
@@ -158,6 +158,7 @@ class Facebook extends BaseProviderComponent
             'clientId'      => Settings::get('facebook_id'),
             'clientSecret'  => Settings::get('facebook_secret'),
             'redirectUri'   => $this -> currentPageUrl(),
+            'graphApiVersion'   => 'v2.8',
             'scopes'        => ['email', 'public_profile', 'user_friends'],
         ]);
     }
