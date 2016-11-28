@@ -85,10 +85,10 @@ class Github extends BaseProviderComponent
               ]);
 
               // Get user details now
-              $userDetails = $provider->getUserDetails($token);
+              $userDetails = $provider->getResourceOwner($token);
 
               // Check if the user already exists
-              $user = UserModel::where( 'email', $userDetails -> email )->first();
+              $user = UserModel::where( 'email', $userDetails -> getName() )->first();
 
               /*
                * If user doesn't exist, create a new user
@@ -96,23 +96,26 @@ class Github extends BaseProviderComponent
               if (!$user) {
                 $password = uniqid();
                 $data = array (
-                  'name' => $userDetails -> name,
-                  'email' => $userDetails -> email,
+                  'name' => $userDetails -> getName(),
+                  'email' => $userDetails -> getEmail(),
                   'password' => $password,
                   'password_confirmation' => $password
                 );
 
                 // Register
-                $user = $this -> register($data, $userDetails -> uid);
+                $user = $this -> register($data, $userDetails -> getId());
               }
 
              // Link the user to Github
              if($user -> social == null)
                 $user -> social = SocialModel::getFromUser($user);
-              $user -> social -> github = $userDetails -> uid;
-              $urls = $userDetails -> urls;
+              $user -> social -> github = $userDetails -> getId();
+              $urls = $userDetails -> getUrl();
               if(!empty($urls))
-                $user -> social -> github_url = array_shift($urls);
+                {
+                  if(is_array($urls)) $user -> social -> github_url = array_shift($urls);
+                  else $user -> social -> github_url = $urls;
+                }
               $user -> social -> save();
 
               /*
