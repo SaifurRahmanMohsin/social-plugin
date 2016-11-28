@@ -152,7 +152,7 @@ class Microsoft extends BaseProviderComponent
         Session::put('provider', 'microsoft');
         $provider = $this -> getProvider();
         $authUrl = $provider -> getAuthorizationUrl();
-        Session::flash('oauth2state', $provider->state);
+        Session::flash('oauth2state', $provider->getState());
         return Redirect::to($authUrl);
     }
 

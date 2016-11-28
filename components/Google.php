@@ -146,7 +146,7 @@ class Google extends BaseProviderComponent
         Session::put('provider', 'google');
         $provider = $this -> getProvider();
         $authUrl = $provider -> getAuthorizationUrl();
-        Session::flash('oauth2state', $provider->state);
+        Session::flash('oauth2state', $provider->getState());
         return Redirect::to($authUrl);
     }
 

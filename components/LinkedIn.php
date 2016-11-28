@@ -84,28 +84,28 @@ class LinkedIn extends BaseProviderComponent
               ]);
 
               // Get user details now
-              $userDetails = $provider->getUserDetails($token);
+              $userDetails = $provider->getResourceOwner($token);
 
               // Check if the user already exists
-              $user = UserModel::where( 'email', $userDetails -> email )->first();
+              $user = UserModel::where( 'email', $userDetails -> getEmail() )->first();
 
               /*
                * If user doesn't exist, create a new user
                */
               if (!$user) {
                 $password = uniqid();
-                $file = $this -> addImage('l' . $userDetails -> uid, $userDetails -> imageUrl);
+                $file = $this -> addImage('l' . $userDetails -> getId(), $userDetails -> getImageurl());
                 $data = array (
-                  'name' => $userDetails -> name,
-                  'surname' => $userDetails -> lastName,
-                  'email' => $userDetails -> email,
-                  'city' => $userDetails -> location,
+                  'name' => $userDetails -> getFirstName(),
+                  'surname' => $userDetails -> getLastName(),
+                  'email' => $userDetails -> getEmail(),
+                  'city' => $userDetails -> getLocation(),
                   'password' => $password,
                   'password_confirmation' => $password
                 );
 
                 // Register
-                $user = $this -> register($data, $userDetails -> uid);
+                $user = $this -> register($data, $userDetails -> getId());
 
                 // Create the relation between the image and user
                 $relation = $user->{'avatar'}();
@@ -115,8 +115,8 @@ class LinkedIn extends BaseProviderComponent
              // Link the user to Github
              if($user -> social == null)
                 $user -> social = SocialModel::getFromUser($user);
-              $user -> social -> linkedin = $userDetails -> uid;
-              $user -> social -> linkedin_url = $userDetails -> urls;
+              $user -> social -> linkedin = $userDetails -> getId();
+              $user -> social -> linkedin_url = $userDetails -> getUrl();
               $user -> social -> save();
 
               /*
@@ -147,7 +147,7 @@ class LinkedIn extends BaseProviderComponent
         Session::put('provider', 'linkedin');
         $provider = $this -> getProvider();
         $authUrl = $provider -> getAuthorizationUrl();
-        Session::flash('oauth2state', $provider->state);
+        Session::flash('oauth2state', $provider->getState());
         return Redirect::to($authUrl);
     }
 
