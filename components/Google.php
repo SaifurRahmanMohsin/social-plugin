@@ -84,28 +84,28 @@ class Google extends BaseProviderComponent
               ]);
 
               // Get user details now
-              $userDetails = $provider->getUserDetails($token);
+              $userDetails = $provider->getResourceOwner($token);
 
               // Check if the user already exists
-              $user = UserModel::where( 'email', $userDetails -> email )->first();
+              $user = UserModel::where( 'email', $userDetails -> getEmail() )->first();
 
               /*
                * If user doesn't exist, create a new user
                */
               if (!$user) {
                 $password = uniqid();
-                $file = $this -> addImage('g' . $userDetails -> uid, substr($userDetails -> imageUrl, 0, strrpos($userDetails -> imageUrl, '?')));
+                $file = $this -> addImage('g' . $userDetails -> getId(), substr($userDetails -> getAvatar(), 0, strrpos($userDetails -> getAvatar(), '?')));
                 $data = array (
-                  'name' => $userDetails -> name,
-                  'surname' => $userDetails -> lastName,
-                  'email' => $userDetails -> email,
+                  'name' => $userDetails -> getFirstName(),
+                  'surname' => $userDetails -> getLastName(),
+                  'email' => $userDetails -> getEmail(),
                   'password' => $password,
                   'password_confirmation' => $password,
                   'avatar' => $file
                 );
 
                 // Register
-                $user = $this -> register($data, $userDetails -> uid);
+                $user = $this -> register($data, $userDetails -> getId());
 
                 // Create the relation between the image and user
                 $relation = $user->{'avatar'}();
@@ -115,7 +115,7 @@ class Google extends BaseProviderComponent
              // Link the user to Google
              if($user -> social == null)
                 $user -> social = SocialModel::getFromUser($user);
-              $user -> social -> google = $userDetails -> uid;
+              $user -> social -> google = $userDetails -> getId();
               $user -> social -> save();
 
               /*
