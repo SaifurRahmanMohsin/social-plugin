@@ -112,10 +112,7 @@ class Github extends BaseProviderComponent
               $user -> social -> github = $userDetails -> getId();
               $urls = $userDetails -> getUrl();
               if(!empty($urls))
-                {
-                  if(is_array($urls)) $user -> social -> github_url = array_shift($urls);
-                  else $user -> social -> github_url = $urls;
-                }
+                $user -> social -> github_url = is_array($urls) ? array_shift($urls) : $urls;
               $user -> social -> save();
 
               /*
