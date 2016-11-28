@@ -161,7 +161,7 @@ class Microsoft extends BaseProviderComponent
      */
     private function getProvider()
     {
-        return new \League\OAuth2\Client\Provider\Microsoft([
+        return new \Stevenmaguire\OAuth2\Client\Provider\Microsoft([
             'clientId'      => Settings::get('microsoft_id'),
             'clientSecret'  => Settings::get('microsoft_secret'),
             'redirectUri'   => $this -> currentPageUrl(),
