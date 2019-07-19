@@ -1,13 +1,13 @@
 {% if not user %}
 
-  <a data-request="onFacebook" {% if showText and not showIcon %}style="padding: 10px 16px;" {% endif %}class="btn {% if useButton %} {% if facebook_btn_size %}btn-{{ facebook_btn_size }} {% endif %}btn-social{% if showIcon and not showText %}-icon{% endif %} btn-facebook{% else %} btn-default{% endif %}">
+  <a data-request="onFacebook" {% if showText and not showIcon %}style="padding: 10px 16px;" {% endif %}class="btn {% if useButton %} {% if facebook_btn_size %}btn-{{ facebook_btn_size }} {% endif %}btn-social{% if showIcon and not showText %}-icon{% endif %} btn-facebook{% else %} btn-default{% endif %}" data-attach-loading>
     {% if showIcon %}<i class="icon icon-facebook"></i>{% endif %}
     {% if showText %}Sign in using {{ __SELF__.name|ucfirst }}{% endif %}
   </a>
 {% else %}
 
   {% if not user.social.facebook %}
-  <a data-request="onFacebook" {% if showText and not showIcon %}style="padding: 10px 16px;" {% endif %}class="btn {% if useButton %} {% if facebook_btn_size %}btn-{{ facebook_btn_size }} {% endif %}btn-social{% if showIcon and not showText %}-icon{% endif %} btn-facebook{% else %} btn-default{% endif %}">
+  <a data-request="onFacebook" {% if showText and not showIcon %}style="padding: 10px 16px;" {% endif %}class="btn {% if useButton %} {% if facebook_btn_size %}btn-{{ facebook_btn_size }} {% endif %}btn-social{% if showIcon and not showText %}-icon{% endif %} btn-facebook{% else %} btn-default{% endif %}" data-attach-loading>
     {% if showIcon %}<i class="icon icon-facebook"></i>{% endif %}
     {% if showText %}Connect to {{ __SELF__.name|ucfirst }}{% endif %}
   </a>

@@ -23,7 +23,7 @@ You need to enable each social network that you would like to use from the backe
 3. Now in the side menu select the **Credentials** and click on **Create Credentials -> OAuth Client ID**. Choose the type as **Web Application** and give it a name such as “For website login”. Set the *Authorized redirect URIs* to your web app's page URL where the Google Login component is to be added and click create. It will show you the *Client ID* and *Client Secret* which should be copied into the Google tab fields in the backend social login settings page.
 
 #### Github ####
-1. Go to your [Github's New OAuth Application page](https://github.com/settings/applications) and in the Developer Applications tab, select your project, otherwise create a new application by clicking on **Register a new application**.
+1. Go to your [Github's New OAuth Application page](https://github.com/settings/developers) and in the Developer Applications tab, select your project, otherwise create a new application by clicking on **Register a new application**.
 2. Set the *Authorization callback URL* to your web app's page URL where the Github Login component is to be added. Once the app is created copy the *Client ID* and *Client Secret* into the Github settings in the backend.
 
 #### LinkedIn ####

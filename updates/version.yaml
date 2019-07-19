@@ -2,13 +2,10 @@
   - First version of Social
   - Created Social Table
   - create_socials_table.php
-1.0.2:
-  - Added additional user information fields
-1.0.3:
-  - Added social icons
-1.0.4:
-  - Bug fix due to October core update
-1.0.5:
-  - Improved plugin and updated all providers
+1.0.2: Added additional user information fields
+1.0.3: Added social icons
+1.0.4: Bug fix due to October core update
+1.0.5: Improved plugin and updated all providers
 1.0.6: !!! Upgrade Facebook API due to deprecation.
 1.0.7: Updated all provider APIs.
+1.0.8: Refactored and reformatted entire codebase.

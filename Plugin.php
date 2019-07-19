@@ -25,68 +25,69 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'mohsin.social::lang.plugin.name',
+            'name' => 'mohsin.social::lang.plugin.name',
             'description' => 'mohsin.social::lang.plugin.description',
-            'author'      => 'Saifur Rahman Mohsin',
-            'icon'        => 'icon-users'
+            'author' => 'Saifur Rahman Mohsin',
+            'icon' => 'icon-users'
         ];
     }
 
     public function boot()
     {
-      UserModel::extend(function($model){
-          $model -> hasOne['social'] = ['Mohsin\Social\Models\Social'];
-      });
+        UserModel::extend(function ($model) {
+            $model->hasOne['social'] = ['Mohsin\Social\Models\Social'];
+        });
 
-      UsersController::extendFormFields(function($form, $model, $context){
+        UsersController::extendFormFields(function ($form, $model, $context) {
 
-          if(!$model instanceof UserModel)
-              return;
+            if (!$model instanceof UserModel) {
+                return;
+            }
 
-          if(!$model->exists)
-            return;
+            if (!$model->exists) {
+                return;
+            }
 
-          // Ensure that the social model always exists!
-          SocialModel::getFromUser($model);
+            // Ensure that the social model always exists!
+            SocialModel::getFromUser($model);
 
-          $form->addTabFields([
+            $form->addTabFields([
 
-              'social[facebook]' => [
-                  'label' => 'mohsin.social::lang.social.facebook_id',
-                  'tab' => 'mohsin.social::lang.plugin.name',
-                ],
-              'social[google]' => [
-                  'label' => 'mohsin.social::lang.social.google_id',
-                  'tab' => 'mohsin.social::lang.plugin.name',
-                ],
-              'social[github]' => [
-                  'label' => 'mohsin.social::lang.social.github_id',
-                  'tab' => 'mohsin.social::lang.plugin.name',
-                ],
-              'social[github_url]' => [
-                  'label' => 'mohsin.social::lang.social.github_url',
-                  'tab' => 'mohsin.social::lang.plugin.name',
-                ],
-              'social[linkedin]' => [
-                  'label' => 'mohsin.social::lang.social.linkedin_id',
-                  'tab' => 'mohsin.social::lang.plugin.name',
-                ],
-              'social[linkedin_url]' => [
-                  'label' => 'mohsin.social::lang.social.linkedin_url',
-                  'tab' => 'mohsin.social::lang.plugin.name',
-                ],
-              'social[microsoft]' => [
-                  'label' => 'mohsin.social::lang.social.microsoft_id',
-                  'tab' => 'mohsin.social::lang.plugin.name',
-                ],
-              'social[microsoft_url]' => [
-                  'label' => 'mohsin.social::lang.social.microsoft_url',
-                  'tab' => 'mohsin.social::lang.plugin.name',
-                ],
+                'social[facebook]' => [
+                    'label' => 'mohsin.social::lang.social.facebook_id',
+                    'tab' => 'mohsin.social::lang.plugin.name',
+                  ],
+                'social[google]' => [
+                    'label' => 'mohsin.social::lang.social.google_id',
+                    'tab' => 'mohsin.social::lang.plugin.name',
+                  ],
+                'social[github]' => [
+                    'label' => 'mohsin.social::lang.social.github_id',
+                    'tab' => 'mohsin.social::lang.plugin.name',
+                  ],
+                'social[github_url]' => [
+                    'label' => 'mohsin.social::lang.social.github_url',
+                    'tab' => 'mohsin.social::lang.plugin.name',
+                  ],
+                'social[linkedin]' => [
+                    'label' => 'mohsin.social::lang.social.linkedin_id',
+                    'tab' => 'mohsin.social::lang.plugin.name',
+                  ],
+                'social[linkedin_url]' => [
+                    'label' => 'mohsin.social::lang.social.linkedin_url',
+                    'tab' => 'mohsin.social::lang.plugin.name',
+                  ],
+                'social[microsoft]' => [
+                    'label' => 'mohsin.social::lang.social.microsoft_id',
+                    'tab' => 'mohsin.social::lang.plugin.name',
+                  ],
+                'social[microsoft_url]' => [
+                    'label' => 'mohsin.social::lang.social.microsoft_url',
+                    'tab' => 'mohsin.social::lang.plugin.name',
+                  ],
 
-            ]);
-
-      });
+              ]);
+        });
     }
 
     public function registerComponents()
@@ -130,6 +131,4 @@ class Plugin extends PluginBase
             ]
         ];
     }
-
-
 }

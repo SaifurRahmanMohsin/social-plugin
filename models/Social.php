@@ -7,7 +7,6 @@ use Model;
  */
 class Social extends Model
 {
-
     /**
      * @var string The database table used by the model.
      */
@@ -32,16 +31,16 @@ class Social extends Model
 
     public static function getFromUser($user)
     {
-        if($user -> social)
-          return $user->social;
+        if ($user->social) {
+            return $user->social;
+        }
 
         $social = new static;
-        $social -> user = $user;
-        $social -> save();
+        $social->user = $user;
+        $social->save();
 
-        $user -> social = $social;
+        $user->social = $social;
 
         return $social;
     }
-
 }

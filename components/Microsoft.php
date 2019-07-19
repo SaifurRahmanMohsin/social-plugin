@@ -18,127 +18,126 @@ use Mohsin\Social\Components\BaseProviderComponent;
 
 class Microsoft extends BaseProviderComponent
 {
-
     public function componentDetails()
     {
         return [
-            'name'        => 'mohsin.social::lang.component.microsoft_login',
+            'name' => 'mohsin.social::lang.component.microsoft_login',
             'description' => 'mohsin.social::lang.component.microsoft_desc'
         ];
     }
 
     public function onRun()
     {
-      parent::onRun();
-      $exception = null;
+        parent::onRun();
+        $exception = null;
 
-      // Check for errors
-      if($this -> hasErrors())
-        return Redirect::to(self::$currentPage);
-
-      if(Session::has('provider') && Session::get('provider') == 'microsoft')
-        {
-
-        /**
-         * Previous request registered the user, login now and redirect
-         */
-        if (Session::has('user_id'))
-        {
-          $user_id = Session::get('user_id');
-          $user = UserModel::where( 'id', $user_id )->first();
-          if(!$user)
-            Flash::error('Forged Request Error');
-          else
-            Auth::login($user);
-
-          /*
-           * Logged in, clear session and redirect to the intended page
-           */
-          Session::remove('provider');
-          $redirectUrl = $this->pageUrl($this->property('redirect'));
-          if ($redirectUrl = post('redirect', $redirectUrl))
-            return Redirect::intended($redirectUrl);
-          else
+        // Check for errors
+        if ($this->hasErrors()) {
             return Redirect::to(self::$currentPage);
         }
 
-        /**
-         * Check given state against previously stored one to mitigate CSRF attack.
-         */
-        if (Input::has('state') && Input::get('state') !== Session::get('oauth2state'))
-        {
-          Flash::error("Invalid state");
-          return Redirect::to(self::$currentPage);
-        }
+        if (Session::has('provider') && Session::get('provider') == 'microsoft') {
+           // Previous request registered the user, login now and redirect
+            if (Session::has('user_id')) {
+                $user_id = Session::get('user_id');
+                $user = UserModel::where('id', $user_id)->first();
 
-        /**
-         * Consume the OAuth token code and perform registration.
-         */
-        $provider = $this -> getProvider();
-        if (Input::has('code'))
-          {
-            $input = Input::get('code');
-            try {
-              // Use the OAuth2 token to get an access token
-              $token = $provider->getAccessToken('authorization_code', [
-                  'code' => $input
-              ]);
+                if (!$user) {
+                    Flash::error('Forged Request Error');
+                } else {
+                    Auth::login($user);
+                }
 
-              // Get user details now
-              $userDetails = $provider->getResourceOwner($token);
-
-              // Check if the user already exists
-              $user = UserModel::where( 'email', $userDetails -> getEmail() )->first();
-
-              /*
-               * If user doesn't exist, create a new user
-               */
-              if (!$user) {
-                $password = uniqid();
-                $file = $this -> addImage('m' . $userDetails -> getId(), substr($userDetails -> getImageurl(), 0, strrpos($userDetails -> getImageurl(), ':')));
-                $data = array (
-                  'name' => $userDetails -> getName(),
-                  'surname' => $userDetails -> getLastname(),
-                  'email' => $userDetails -> getEmail(),
-                  'password' => $password,
-                  'password_confirmation' => $password,
-                  'avatar' => $file
-                );
-
-                // Register
-                $user = $this -> register($data, $userDetails -> getId());
-
-                // Create the relation between the image and user
-                $relation = $user->{'avatar'}();
-                $relation -> add($file, $this->sessionKey);
-              }
-
-             // Link the user to Microsoft
-             if($user -> social == null)
-                $user -> social = SocialModel::getFromUser($user);
-              $user -> social -> microsoft = $userDetails -> getId();
-              $urls = $userDetails -> getImageurl();
-              if(!empty($urls))
-                $user -> social -> microsoft_url = is_array($urls) ? array_shift($urls) : $urls;
-              $user -> social -> save();
-
-              /*
-               * Registered, tell the plugin to login
-               */
-              Session::flash('user_id', $user -> id);
-            } catch (InvalidArgumentException $ex) { // Expired token and missing arguments
-              $exception = Lang::get('mohsin.social::lang.errors.used_token');
-            } catch (AuthException $ex) { // Expired token and missing arguments
-              $exception = $ex->getMessage();
-            } catch (IDPException $ex) { // All other exceptions
-              $exception = $ex->getMessage();
-            } catch (Exception $ex) { // All other exceptions
-              $exception = $ex->getMessage();
+                /*
+                 * Logged in, clear session and redirect to the intended page
+                 */
+                Session::remove('provider');
+                $redirectUrl = $this->pageUrl($this->property('redirect'));
+                if ($redirectUrl = post('redirect', $redirectUrl)) {
+                    return Redirect::intended($redirectUrl);
+                } else {
+                    return Redirect::to(self::$currentPage);
+                }
             }
-            if ($exception)
-              Flash::error();
-            return Redirect::to(self::$currentPage);
-          }
+
+            /**
+             * Check given state against previously stored one to mitigate CSRF attack.
+             */
+            if (Input::has('state') && Input::get('state') !== Session::get('oauth2state')) {
+                Flash::error("Invalid state");
+                return Redirect::to(self::$currentPage);
+            }
+
+            /**
+             * Consume the OAuth token code and perform registration.
+             */
+            $provider = $this->getProvider();
+            if (Input::has('code')) {
+                $input = Input::get('code');
+                try {
+                    // Use the OAuth2 token to get an access token
+                    $token = $provider->getAccessToken('authorization_code', [
+                        'code' => $input
+                    ]);
+
+                    // Get user details now
+                    $userDetails = $provider->getResourceOwner($token);
+
+                    // Check if the user already exists
+                    $user = UserModel::where('email', $userDetails->getEmail())->first();
+
+                    /*
+                     * If user doesn't exist, create a new user
+                     */
+                    if (!$user) {
+                        $password = uniqid();
+                        $file = $this->addImage('m' . $userDetails->getId(), substr($userDetails->getImageurl(), 0, strrpos($userDetails->getImageurl(), ':')));
+                        $data = array (
+                          'name' => $userDetails->getName(),
+                          'surname' => $userDetails->getLastname(),
+                          'email' => $userDetails->getEmail(),
+                          'password' => $password,
+                          'password_confirmation' => $password,
+                          'avatar' => $file
+                        );
+
+                        // Register
+                        $user = $this->register($data, $userDetails->getId());
+
+                        // Create the relation between the image and user
+                        $relation = $user->{'avatar'}();
+                        $relation->add($file, $this->sessionKey);
+                    }
+
+                    // Link the user to Microsoft
+                    if ($user->social == null) {
+                        $user->social = SocialModel::getFromUser($user);
+                    }
+
+                    $user->social->microsoft = $userDetails->getId();
+                    if (!empty($urls)) {
+                        $user->social->microsoft_url = is_array($urls) ? array_shift($urls) : $urls;
+                    }
+                     $user->social->save();
+
+                     /*
+                      * Registered, tell the plugin to login
+                      */
+                     Session::flash('user_id', $user->id);
+                } catch (InvalidArgumentException $ex) { // Expired token and missing arguments
+                    $exception = Lang::get('mohsin.social::lang.errors.used_token');
+                } catch (AuthException $ex) { // Expired token and missing arguments
+                    $exception = $ex->getMessage();
+                } catch (IDPException $ex) { // All other exceptions
+                    $exception = $ex->getMessage();
+                } catch (Exception $ex) { // All other exceptions
+                    $exception = $ex->getMessage();
+                }
+                if ($exception) {
+                    Flash::error();
+                }
+                return Redirect::to(self::$currentPage);
+            }
         }
     }
 
@@ -147,11 +146,12 @@ class Microsoft extends BaseProviderComponent
      */
     public function onMicrosoft()
     {
-        if(Session::has('provider'))
-          Session::remove('provider');
+        if (Session::has('provider')) {
+            Session::remove('provider');
+        }
         Session::put('provider', 'microsoft');
-        $provider = $this -> getProvider();
-        $authUrl = $provider -> getAuthorizationUrl();
+        $provider = $this->getProvider();
+        $authUrl = $provider->getAuthorizationUrl();
         Session::flash('oauth2state', $provider->getState());
         return Redirect::to($authUrl);
     }
@@ -164,9 +164,8 @@ class Microsoft extends BaseProviderComponent
         return new \Stevenmaguire\OAuth2\Client\Provider\Microsoft([
             'clientId'      => Settings::get('microsoft_id'),
             'clientSecret'  => Settings::get('microsoft_secret'),
-            'redirectUri'   => $this -> currentPageUrl(),
-            'scopes'        => ['wl.basic', 'wl.emails'],
+            'redirectUri'   => $this->pageUrl($this->property('redirect')) . '/',
+            'scopes'        => ['wl.basic', 'wl.signin'],
         ]);
     }
-
 }
