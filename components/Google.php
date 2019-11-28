@@ -81,7 +81,8 @@ class Google extends BaseProviderComponent
                     // If user doesn't exist, create a new user
                     if (!$user) {
                         $password = uniqid();
-                        $file = $this->addImage('g' . $userDetails->getId(), substr($userDetails->getAvatar(), 0, strrpos($userDetails->getAvatar(), '?')));
+                        \Log::info($userDetails->getAvatar());
+                        $file = $this->addImage('g' . $userDetails->getId(), $userDetails->getAvatar());
                         $data = array (
                           'name' => $userDetails->getFirstName(),
                           'surname' => $userDetails->getLastName(),

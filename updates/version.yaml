@@ -9,3 +9,4 @@
 1.0.6: !!! Upgrade Facebook API due to deprecation.
 1.0.7: Updated all provider APIs.
 1.0.8: Refactored and reformatted entire codebase.
+1.0.9: Bug Fix -- Google provider image was broken.
