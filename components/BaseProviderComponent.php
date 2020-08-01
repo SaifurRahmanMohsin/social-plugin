@@ -62,9 +62,6 @@ class BaseProviderComponent extends Account
 
     public function onRun()
     {
-        // Call parent to inject the user variable to the page
-        parent::onRun();
-
         // Initialize the provider
         $this->setProvider();
 
