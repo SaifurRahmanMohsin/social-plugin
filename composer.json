@@ -1,5 +1,6 @@
 {
-    "name": "mohsin/social",
+    "name": "mohsin/social-plugin",
+    "type": "october-plugin",
     "description": "Just another social plugin",
     "homepage": "http://imoz.in",
     "keywords": ["octobercms", "social","facebook", "github", "microsoft", "google", "linkedin"],
